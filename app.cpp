@@ -186,7 +186,7 @@ void count()
   while(cn <= 400)
   {
     //printf("%d\n", cn);
-    sleep(100);
+    //sleep(100);
     cn = cn + 1;
   }
   mresult = true;
