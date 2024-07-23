@@ -74,7 +74,7 @@ class BlockSection : public SectionManager
                              {13,14,15,16,12,8,4,3,7,6,2,1,5,9,10,11},
                              {13,9,10,14,15,11,7,6,5,1,2,3,4,8,12,16}
                             };
-        int position_edge[7][16] =
+        int position_edge[7][16] = 
                             {
                              {1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
                              {-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -95,7 +95,7 @@ class BlockSection : public SectionManager
                              {-90,-90,-90,90,90,0,90,0,-90,-90,0,0,-90,0,0,0}
                             };
 
-        direction goal_direction[7][16] =
+        direction goal_direction[7][16] =//最初のターン
                             {
                              {first,right,right,right,front,behind,behind,right,right,right,front,front,right,right,behind,right},
                              {first,front,behind,behind,left,left,left,front,front,behind,left,left,front,behind,left,front},
