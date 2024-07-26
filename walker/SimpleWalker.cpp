@@ -5,7 +5,7 @@
  *  Author: Kazuhiro.Kawachi
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
-
+//ライントレースしない走行
 #include "SimpleWalker.h"
 #include "Walker.h"
 #include "util.h"

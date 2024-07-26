@@ -1,3 +1,4 @@
+//直接使わない
 #include "Walker.h"
 
 Walker::Walker( Odometry *odo):

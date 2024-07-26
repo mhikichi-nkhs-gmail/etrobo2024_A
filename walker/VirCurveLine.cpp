@@ -1,3 +1,4 @@
+//ä»®æƒ³ç›´ç·šãƒ©ã‚¤ãƒ³ãƒˆãƒ¬ãƒ¼ã‚¹
 #include "VirCurveLine.h"
 #include "math.h"
 
@@ -62,7 +63,7 @@ void VirCurveLine::setParam(double vcurve[])
    
 }
 
-void VirCurveLine::setBias(double curve) //ƒJ[ƒuƒpƒ‰ƒ€
+void VirCurveLine::setBias(double curve) //ï¿½Jï¿½[ï¿½uï¿½pï¿½ï¿½ï¿½ï¿½
 {
     mBias = curve;
 }
@@ -72,7 +73,7 @@ void VirCurveLine::init()
     calcSenter();
 }
 
-void VirCurveLine::calcSenter() //’†SÀ•W‚Ì“Á’è
+void VirCurveLine::calcSenter() //ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Wï¿½Ì“ï¿½ï¿½ï¿½
 {
     double angle1 = (mAngle->getValue())*M_PI/180;
 
@@ -87,13 +88,13 @@ void VirCurveLine::calcSenter() //’†SÀ•W‚Ì“Á’è
 
 }
 
-void VirCurveLine::calcLength() //‘–s‘Ì‚Æ’†SÀ•W‚Æ‚Ì”¼Œa
+void VirCurveLine::calcLength() //ï¿½ï¿½ï¿½sï¿½Ì‚Æ’ï¿½ï¿½Sï¿½ï¿½ï¿½Wï¿½Æ‚Ì”ï¿½ï¿½a
 {
     R = sqrt((centerx - xsensor) * (centerx - xsensor) + (centery - ysensor) * (centery - ysensor));
     //printf("R%f\n", R);
 }
 
-void VirCurveLine::calcSenoer() //ƒZƒ“ƒT[‚ÌêŠ
+void VirCurveLine::calcSenoer() //ï¿½Zï¿½ï¿½ï¿½Tï¿½[ï¿½ÌêŠ
 {
     double angle2 = (mAngle->getValue())*M_PI/180;
     maddsensor = 5;

@@ -141,8 +141,8 @@ void Scene::execStart()
     ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
     if (ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
     {
-        printf("SPEED\n");
-            mState=SPEED;
+        printf("DOUBLELOOP\n");
+            mState=DOUBLELOOP;
     }
 #else
     if (ev3_button_is_pressed(ENTER_BUTTON))

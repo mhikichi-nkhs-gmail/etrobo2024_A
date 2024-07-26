@@ -1,3 +1,4 @@
+//写真関連の通信のプログラム
 #ifndef FILEWALKER
 #define FILEWALKER
 

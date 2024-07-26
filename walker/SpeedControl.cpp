@@ -1,3 +1,4 @@
+//自分達は直接使わん
 #include "SpeedControl.h"
 
 SpeedControl::SpeedControl(Odometry *odo):

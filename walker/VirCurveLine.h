@@ -1,3 +1,4 @@
+
 #ifndef VIRCURVELINE
 #define VIRCURVELINE
 
