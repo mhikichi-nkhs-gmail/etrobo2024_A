@@ -5,6 +5,18 @@
 
 class SmartSection : public SectionManager
 {
- public:
-    SmartSection();
+    public: //変数宣言
+
+
+        SmartSection();
+        bool run();
+        void course(int direct);
+
+        enum COURSNO{
+
+        };
+    
+    protected:
+        COURSNO NO;
+
 }
