@@ -70,10 +70,29 @@ class DoubleSection : public SectionManager
         double ti = 20;
         double td = 2.5;
         //JudgeReception * mJr;
+        
+        SecParam s_Lcourse[7] = {
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WALKER,{0,0},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
-        SecParam Lcourse[21] = {
+        SecParam s_Lnextpoint[8] = {
+            {Section::TRACER,{70, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{130, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{70, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{130, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
+
+        SecParam k_Lcourse[21] = {
             {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
-            //{Section::WALKER,{0,0},Section::TIME,{100000000, Section::FLNONE}, Section::EMNONE,{}},
+            {Section::WALKER,{0,0},Section::TIME,{100000000, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{130, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
@@ -89,7 +108,7 @@ class DoubleSection : public SectionManager
             {Section::WALKER,{0,0},Section::TIME,{1, Section::FLNONE}, Section::EMNONE,{}},
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
-        SecParam Lnextpoint[20] = {
+        SecParam k_Lnextpoint[20] = {
             {Section::TRACER,{45, db, 13, 27.5, 7.0 ,0 , 0, _EDGE},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{60, db, 13, 27.5, 5.5 ,0 , 0, _EDGE},Section::LENGTH,{5+49, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{50, db, 13, 27.5, 5.5 ,0 , 0, _EDGE},Section::LENGTH,{5+49+15, Section::FLNONE}, Section::EMNONE,{}},
@@ -125,7 +144,16 @@ class DoubleSection : public SectionManager
             {Section::TRACER,{50, -0.1, 13, 27.5, 7.0 ,0 , 0, _EDGE},Section::COLOR,{208,0.08, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
-        SecParam Rcourse[100] = {
+        SecParam s_Rcourse[100] = {
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WALKER,{0,0},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
+
+        SecParam k_Rcourse[100] = {
             {Section::VIRSLINE,{50, 13, 0, 12.8, 2.5 ,4.9,1},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{60, db, 13, 27.5, 5.0 ,0 , 0, _EDGE},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{60, db, 13, 27.5, 4.5 ,0 , 0, _EDGE},Section::LENGTH,{5+120, Section::FLNONE}, Section::EMNONE,{}},/*RESETLEN*/
@@ -145,7 +173,17 @@ class DoubleSection : public SectionManager
             {Section::WALKER,{0,0},Section::TIME,{1, Section::FLNONE}, Section::EMNONE,{}},
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
-        SecParam Rnextpoint[20] = {
+        SecParam s_Rnextpoint[20] = {
+            {Section::TRACER,{70, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{130, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{70, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{130, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
+
+        SecParam k_Rnextpoint[20] = {
             {Section::TRACER,{45, db, 13, 27.5, 7.0 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{60, db, 13, 27.5, 5.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{5+49, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{45, db, 13, 27.5, 5.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{5+49+15, Section::FLNONE}, Section::EMNONE,{}},

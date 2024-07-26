@@ -9,18 +9,19 @@ DoubleSection::DoubleSection()
 
 bool DoubleSection::run()
 {   
+    print("ダブル")
     switch(NO)
     {
     case SET_LBLUE_MARKER:
-        set(Lcourse);
-        NO = LBLUE_MARKER;
+        set(s_Lcourse);
+        NO = SET_LNEXT_POINT;
         break;
     case LBLUE_MARKER:
         bluemarker(num1);
         break; 
     case SET_LNEXT_POINT:
-        set(Lnextpoint);
-        NO = LNEXT_POINT;
+        set(s_Lnextpoint);
+        NO = END;
         break;
     case LNEXT_POINT:
         bluemarker(num1);

@@ -46,27 +46,34 @@ bool Section::run()
 Walker *Section::selectWalker(int no)
 {
     switch(no) {
+        //単純走行
         case WALKER:
             mWalker = (Walker*)(new SimpleWalker(gOdo,gSpeed));
             break;
+        //ライントレース走行
         case TRACER:
             mWalker = (Walker*)(new LineTracer(gOdo,gSpeed));
            break;
+        //仮想直線ライントレース走行
         case VIRCLINE:
             mWalker = (Walker*)(new VirCurveLine(gOdo,gSpeed));
             break;
+        //仮想曲線ライントレース走行
         case VIRSLINE:
             mWalker = (Walker*)(new VirStraightLine(gOdo,gSpeed));
             break;
+        //回転
         case TWALKER:
             mWalker = (Walker*)(new TurnWalker(gOdo,gSpeed));
             break;
+        
         case FILE:
             mWalker = (Walker*)(new FileWalker(gOdo));
             break;
         //default:
             //msg_log("selectWalker error!!");
-        case WANONE:
+        case W
+        NONE:
             break;
     }
 
