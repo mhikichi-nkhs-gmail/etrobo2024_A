@@ -1,4 +1,4 @@
-//仮想直線ライントレース
+//仮想曲線ライントレース
 #include "VirCurveLine.h"
 #include "math.h"
 
@@ -49,9 +49,12 @@ double VirCurveLine::calcTurn()
 
 void VirCurveLine::setParam(double vcurve[])
 {
+    //半径←これなに？
     mradius = vcurve[1];
+    //速度
     mTargetSpeed = vcurve[0];
     mTarget = 0;
+    //PID制御
     mPFactor = vcurve[2];
     mIFactor = vcurve[3];
     mDFactor = vcurve[4];

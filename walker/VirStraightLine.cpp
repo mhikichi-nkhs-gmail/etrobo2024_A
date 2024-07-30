@@ -1,4 +1,4 @@
-//仮想曲線ライントレース
+//仮想直線ライントレース
 #include "VirStraightLine.h"
 #include "math.h"
 
@@ -38,12 +38,17 @@ double VirStraightLine::calcTurn()
 void VirStraightLine::setParam(double vstraight[]) //?��?��?��x,?��p?��x,0,P,I,D
 {
     //printf("Angle%f,,\n",(mAngle->getValue()));
+    //速度
     mTargetSpeed = vstraight[0];
+    //角度
     mSetAngle = vstraight[1];
+    //黒線を何度ずれたら再度見に行くかの角度
     mTarget = vstraight[2];
+    //PID制御
     mPFactor = vstraight[3];
     mIFactor = vstraight[4];
     mDFactor = vstraight[5];
+    //リセット
     resetAng = vstraight[6];
   
     mPid->setTarget(mTarget);

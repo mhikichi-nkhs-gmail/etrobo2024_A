@@ -25,8 +25,9 @@ void TurnWalker::setParam(double power[])
 {
     mTargetSpeed = 0;
     mTarget = 0;
-
+    //何度回転するのか
     mTurn = power[0];
+    //PID制御
     mPFactor = power[1];
     mIFactor = power[2];
     mDFactor = power[3];

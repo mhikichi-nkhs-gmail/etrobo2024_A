@@ -112,7 +112,9 @@ void SimpleWalker::setParam(double simArray[])
 {
     //printf("AAAAAAA\n");
     //setCommand(simArray[0],simArray[1]);
+    //進む勢い?
     mInitForword = simArray[0];
+    //何度回転
     mInitTurn = simArray[1];
 }
 

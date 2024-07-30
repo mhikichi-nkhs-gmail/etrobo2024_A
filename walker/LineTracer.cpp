@@ -74,7 +74,7 @@ double LineTracer::calcTurn(double val1) {
 }
 
 void LineTracer::setParam(double speed,double target,double kp, double ki, double kd) 
-{
+{            //速度 //どのぐらいずれたら黒線を見に行くか
     setParam(speed, target, kp,  ki,  kd,
                          1, 1);
 
