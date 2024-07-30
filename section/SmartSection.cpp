@@ -8,29 +8,32 @@ SmartSection::SmartSection()
 
 bool SmartSection::run()
 {
-    print("スマートきゃりーぱみゅぱみゅ")
+    printf("スマートきゃりー\n");
     switch(NO)
     {
     case SET_VIR_LINE:
+        printf("VIRキャリー\n");
         set(VIR);
         NO = END;
         break;
     case END:
-        printf("END\n");
+        printf("ENDキャリー\n");
         return true;
     }
     return false;
 }
 
-void DoubleSection::course(int direct)
+void SmartSection::course(int direct)
 {
     if(direct == 0)
     {
+        printf("smartleft\n");
         NO = SET_VIR_LINE;
         num1 = 0;
     }
     else
     {
+        printf("smartright\n");
         NO = SET_VIR_LINE;
         num1 = 4;
     }

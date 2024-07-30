@@ -22,6 +22,7 @@ Scene::Scene():
     mDs = new DoubleSection();
     mDs2 = new DoubleSection();
     mBs = new BlockSection();
+    mSs = new SmartSection();
     int mv = ev3_battery_voltage_mV();
     printf("%d\n",mv);
     printf("作った\n");
@@ -47,6 +48,9 @@ bool Scene::run()
             break;
         case BLOCK:
             execBlock();
+            break;
+        case SMART:
+            execSmartCarry();
             break;
         /*
         case BINGO:
@@ -82,6 +86,7 @@ void Scene::execCalibration()
         mDs2->scircle(0);
         mBs->course(0);
         gColor->setRGB();
+        mSs->course(0);
         mState=START;
     }
     ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
@@ -93,6 +98,7 @@ void Scene::execCalibration()
         mDs2->scircle(1);
         mBs->course(1);
         gColor->setRGB();
+        mSs->course(1);
         mState=START;
     }
     /*
@@ -142,7 +148,7 @@ void Scene::execStart()
     if (ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
     {
         printf("DOUBLELOOP\n");
-            mState=DOUBLELOOP;
+            mState=SMART;
     }
 #else
     if (ev3_button_is_pressed(ENTER_BUTTON))
@@ -150,7 +156,7 @@ void Scene::execStart()
         printf("SPEED\n");
         //mState=SPEED;
         //mState=DOUBLELOOP;
-        mState=BLOCK;
+        mState=SMART;
     }
 #endif
 //printf("Start_Finish\n");
@@ -194,6 +200,15 @@ void Scene::execBlock()
     {
         printf("block終わった\n");
         delete mBs;
+        mState=END;
+    }
+}
+void Scene::execSmartCarry()
+{
+    if(mSs->run())
+    {
+        printf("Smart終わった\n");
+        delete mSs;
         mState=END;
     }
 }

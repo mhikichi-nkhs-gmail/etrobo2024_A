@@ -39,7 +39,8 @@ APPL_CXXOBJS += \
 	DoubleSection.o \
 	BlockSection.o \
 	Process.o \
-	FileWalker.o
+	FileWalker.o \
+	SmartSection.o 
 
 SRCLANG := c++
 
