@@ -24,7 +24,7 @@ class SpeedSectionManager : public SectionManager {
 
 #if SP == 1
         SecParam Lcourse[20] = {
-            {Section::WALKER,{0,0},Section::TIME,{10, Section::FLNONE}, Section::EMNONE,{}},
+            {Section::TRACER,{90, 0, 9.9, 28, 4.6 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{288, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 13, 30, 4.5 ,17 , 0, 'LEFTEDGE'},Section::LENGTH,{323, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{90, 0, 9.9, 28, 4.6 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{503, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 14, 30, 4.5 ,17, 0, 'LEFTEDGE'},Section::LENGTH,{538, Section::FLNONE}, Section::EMNONE,{}},
@@ -35,7 +35,6 @@ class SpeedSectionManager : public SectionManager {
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
         SecParam Rcourse[20] = {
-            {Section::WALKER,{0,0},Section::TIME,{10, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{90, 0, 9.9, 28, 4.7 , 0, 0, _EDGE},Section::LENGTH,{288, Section::FLNONE}, Section::EMNONE,{}},
             //{Section::WALKER,{0,0},Section::TIME,{10000000, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 13, 30, 4.5 ,-17 , 0, _EDGE},Section::LENGTH,{323, Section::FLNONE}, Section::EMNONE,{}},
@@ -50,7 +49,6 @@ class SpeedSectionManager : public SectionManager {
 
 #if SP == 2
         SecParam Lcourse[20] = {
-            {Section::WALKER,{0,0},Section::TIME,{10, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 9.9, 27, 4.55 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{288, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{65, 0, 13, 30, 4.5 ,17 , 0, 'LEFTEDGE'},Section::LENGTH,{323, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 9.9, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{503, Section::FLNONE}, Section::EMNONE,{}},
@@ -62,7 +60,6 @@ class SpeedSectionManager : public SectionManager {
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
         SecParam Rcourse[20] = {
-            {Section::WALKER,{0,0},Section::TIME,{10, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 9.9, 27, 4.55 , 0, 0, _EDGE},Section::LENGTH,{288, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{65, 0, 13, 30, 4.6 ,-17 , 0, _EDGE},Section::LENGTH,{323, Section::FLNONE}, Section::EMNONE,{}},
             {Section::TRACER,{70, 0, 9.9, 27, 4.5 ,0 , 0, _EDGE},Section::LENGTH,{503, Section::FLNONE}, Section::EMNONE,{}},
