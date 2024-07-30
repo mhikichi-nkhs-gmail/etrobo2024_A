@@ -71,9 +71,9 @@ Walker *Section::selectWalker(int no)
             break;
         //default:
             //msg_log("selectWalker error!!");
-        case W
-        NONE:
-            break;
+        //case W:
+        //NONE:
+        //    break;
     }
 
     return mWalker;

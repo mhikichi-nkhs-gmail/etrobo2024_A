@@ -9,7 +9,7 @@ DoubleSection::DoubleSection()
 
 bool DoubleSection::run()
 {   
-    print("ダブル")
+    printf("ダブル\n");
     switch(NO)
     {
     case SET_LBLUE_MARKER:
@@ -58,14 +58,14 @@ bool DoubleSection::run()
         bluemarker(8);
         break;
     case SET_RBLUE_MARKER:
-        set(Rcourse);
+        set(SRcourse);
         NO = RBLUE_MARKER;
         break;
     case RBLUE_MARKER:
         bluemarker(num1);
         break; 
     case SET_RNEXT_POINT:
-        set(Rnextpoint);
+        set(s_Rnextpoint);
         NO = RNEXT_POINT;
         break;
     case RNEXT_POINT:
