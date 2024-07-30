@@ -72,7 +72,6 @@ class DoubleSection : public SectionManager
         //JudgeReception * mJr;
         
         SecParam s_Lcourse[7] = {
-            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::WALKER,{0,0},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
@@ -145,11 +144,10 @@ class DoubleSection : public SectionManager
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
         SecParam s_Rcourse[100] = {
-            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::WALKER,{0,0},Section::LENGTH,{10, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
-            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, 'LEFTEDGE'},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
-            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, 'LEFTEDGE'},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{65, 0.05, 10, 27, 4.5 ,0 , 0, _EDGE},Section::LENGTH,{100, Section::RESETLEN}, Section::EMNONE,{}},
+            {Section::TRACER,{50, 0.05, 43, 4.5, 6.0 ,0 , 0, _EDGE},Section::COLOR,{210,0.08, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::VIRSLINE,{50, -10, 0, 28, 2.5 ,5.0,1},Section::LENGTH,{5, Section::RESETLEN}, Section::EMNONE,{}},
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
@@ -200,7 +198,6 @@ class DoubleSection : public SectionManager
             {Section::TWALKER,{-tw,tp,ti,td},Section::TURNANGLE,{-13, Section::FLNONE}, Section::EMNONE,{}},
             //{Section::WALKER,{0,0},Section::TIME,{100000, Section::FLNONE}, Section::EMNONE,{}},
             {Section::WALKER,{0,0},Section::TIME,{10, Section::FLNONE}, Section::EMNONE,{}},
-            
             {Section::WANONE,{},Section::JUNONE,{}, Section::EMNONE,{}}};
 
         SecParam Rbluemarker1[10] = { 

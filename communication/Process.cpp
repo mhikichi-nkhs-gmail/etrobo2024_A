@@ -1,3 +1,4 @@
+//カメラなどの通信プログラム
 #include "Process.h"
 #include "stdio.h"
 #include "app.h"

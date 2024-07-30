@@ -66,7 +66,6 @@ Walker *Section::selectWalker(int no)
         case TWALKER:
             mWalker = (Walker*)(new TurnWalker(gOdo,gSpeed));
             break;
-        
         case FILE:
             mWalker = (Walker*)(new FileWalker(gOdo));
             break;
