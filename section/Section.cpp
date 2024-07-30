@@ -54,11 +54,11 @@ Walker *Section::selectWalker(int no)
         case TRACER:
             mWalker = (Walker*)(new LineTracer(gOdo,gSpeed));
            break;
-        //仮想直線ライントレース走行
+        //仮想曲線ライントレース走行
         case VIRCLINE:
             mWalker = (Walker*)(new VirCurveLine(gOdo,gSpeed));
             break;
-        //仮想曲線ライントレース走行
+        //仮想直線ライントレース走行
         case VIRSLINE:
             mWalker = (Walker*)(new VirStraightLine(gOdo,gSpeed));
             break;
