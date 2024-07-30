@@ -6,6 +6,7 @@
 #include "MyColorSensor.h"
 #include "DoubleSection.h"
 #include "BlockSection.h"
+#include "SmartSection.h"
 
 
 
@@ -19,6 +20,7 @@ class Scene{
         void execSpeed();
         void execDoubleloop();
         void execBlock();
+        void execSmartCarry();
         //void execBingo();
         //void execGarage();
 
@@ -30,6 +32,7 @@ class Scene{
             SPEED,
             DOUBLELOOP,
             BLOCK,
+            SMART,
             //BINGO,
             //GARAGE,
             END
@@ -46,6 +49,8 @@ class Scene{
         DoubleSection *mDs2;
 
         BlockSection *mBs;
+
+        SmartSection *mSs;
 
         
 };
