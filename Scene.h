@@ -3,7 +3,7 @@
 
 #include "SpikePort.h"
 #include "SpeedSectionManager.h"
-#include "ColorSensor.h"
+//#include "ColorSensor.h"
 #include "MyColorSensor.h"
 #include "DoubleSection.h"
 #include "BlockSection.h"

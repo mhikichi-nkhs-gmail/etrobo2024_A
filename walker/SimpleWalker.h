@@ -10,7 +10,7 @@
 #define EV3_UNIT_SIMPLE_H_
 
 #include "Walker.h"
-#include "Motor.h"
+//#include "Motor.h"
 #include "Odometry.h"
 #include "PID.h"
 #include "SpeedControl.h"

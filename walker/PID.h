@@ -2,8 +2,8 @@
 #define _PID_H_
 
 #include "spikeapi.h"
-#include "Clock.h"
-using namespace ev3api;
+//#include "Clock.h"
+//using namespace ev3api;
 
 class PID {
     public:
@@ -49,7 +49,7 @@ class PID {
 
         int firstCnt=0;
 
-        Clock *clk;
+        //Clock *clk;
 
 };
 
