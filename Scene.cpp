@@ -11,7 +11,7 @@ extern HsvHue *gHsvHue;
 
 extern HsvSatu *gHsvSatu;
 
-pup_device_t *  gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
+pup_device_t *gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
 
 
 bool flag = false;
