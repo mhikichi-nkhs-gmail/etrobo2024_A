@@ -1,6 +1,7 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
+#include "SpikePort.h"
 #include "SpeedSectionManager.h"
 #include "ColorSensor.h"
 #include "MyColorSensor.h"
@@ -8,6 +9,12 @@
 #include "BlockSection.h"
 #include "SmartSection.h"
 
+//typedef enum _hub_button_t {
+    //HUB_BUTTON_LEFT   = PBIO_BUTTON_LEFT,
+    //HUB_BUTTON_CENTER = PBIO_BUTTON_CENTER,
+    //HUB_BUTTON_RIGHT  = PBIO_BUTTON_RIGHT,
+    //HUB_BUTTON_BT     = PBIO_BUTTON_RIGHT_UP,
+ //} hub_button_t;
 
 
 class Scene{

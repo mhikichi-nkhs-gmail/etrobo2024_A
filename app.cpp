@@ -6,7 +6,8 @@
 #include "app.h"
 #include "util.h"
 
-#include "Motor.h"
+//#include "Motor.h"
+#include "SpikePort.h"
 
 #include "Polling.h"
 #include "MyColorSensor.h"
@@ -31,17 +32,20 @@
 #include "MotorManager.h"
 #include "JudgeReception.h"
 
-using namespace ev3api;
+//using namespace spikeapi;
+//using namespace ev3api;
 
 int log_max=30000;
 int log_idx=0;
 
 double msg_logbuf[30000][10];
 
-
-Motor       *gLeftWheel = new Motor(PORT_C,false,LARGE_MOTOR);
-Motor       *gRightWheel = new Motor(PORT_B,false,LARGE_MOTOR);
-Motor       *gArm = new Motor(PORT_A,true,LARGE_MOTOR);
+pup_device_t *  gforcesensor = pup_force_sensor_get_device(PBIO_PORT_ID_F);
+pup_device_t *  gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
+pup_device_t *  gultrasensor = pup_ultrasonic_sensor_get_device (PBIO_PORT_ID_D);
+pup_motor_t *  gLeftWheel = pup_motor_get_device(PBIO_PORT_ID_E);
+pup_motor_t *  gRightWheel = pup_motor_get_device(PBIO_PORT_ID_B);
+pup_motor_t *  gArm = pup_motor_get_device(PBIO_PORT_ID_A);
 
 Polling *gPolling;
 MyColorSensor *gColor;
@@ -75,7 +79,7 @@ static void user_system_create() {
   gHsvHue = new HsvHue();
   gHsvSatu = new HsvSatu();
 
-  gColor = new MyColorSensor(PORT_2,gBrightness,gHsvHue,gHsvSatu);
+  gColor = new MyColorSensor(gcolorsensor,gBrightness,gHsvHue,gHsvSatu);
   gLength = new Length();
   gTurnAngle = new TurnAngle();
   gMotor = new MotorManager(gLeftWheel, gRightWheel);
@@ -115,8 +119,10 @@ void main_task(intptr_t unused) {
   stp_cyc(POLLING_CYC);
   stp_cyc(TRACER_CYC);
 
-  gLeftWheel->setPWM(0);
-  gRightWheel->setPWM(0);
+  //gLeftWheel->setPWM(0);
+  pup_motor_set_power	(gLeftWheel,0);
+  //gRightWheel->setPWM(0);
+  pup_motor_set_power	(gRightWheel,0);
 
   ext_tsk();
 
@@ -137,7 +143,8 @@ void polling_task(intptr_t unused) {
     double x = gXPosition->getValue();
     double y = gYPosition->getValue();
 
-    rgb_raw_t rgb = gColor->getRgb();
+    //rgb_raw_t rgb = gColor->getRgb();
+    pup_color_sensor_rgb(gcolorsensor);
     static char buf[100];
     //sprintf(buf,"len , bri,H,S r,g,b, turn, v : %3.3f,  %7.4f,  %5.1f, %3.2f, %d,%d,%d  , %4.2f, %4.2f \n",len,br,h,s,  rgb.r, rgb.g,rgb.b ,turn,v);
     //msg_log(buf);
@@ -148,36 +155,44 @@ void polling_task(intptr_t unused) {
     ext_tsk();
 }
 
+
 void tracer_task(intptr_t unused) {
+  hub_button_t pressed;
+  pbio_error_t err = hub_button_is_pressed(&pressed); 
+  
+  #if defined(MAKE_SIM)
 
-#if defined(MAKE_SIM)
-
-    if(ev3_button_is_pressed(BACK_BUTTON)) 
-    {
-        wup_tsk(MAIN_TASK);  // 左ボタン押下でメインを起こす
-    }
+  if(pressed & HUB_BUTTON_BT)  
+  {
+      wup_tsk(MAIN_TASK);  // 左ボタン押下でメインを起こす
+  }
 #else
-    ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
-    if(ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1) 
-    {
-      wup_tsk(MAIN_TASK);
-    }
+  //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
+  
+  
+ //if(ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
+  if(pup_force_sensor_pressed(gforcesensor , 1))
+  {
+    wup_tsk(MAIN_TASK);
+  }
 #endif
-    else{
-
-    // とりあえずここで、アー�?の固定。設計に基づ�?て変えるべ�?
-    int arm_cnt = gArm->getCount();
-   // syslog(LOG_NOTICE,"%d",arm_cnt);
-    int diff = -50 - arm_cnt;
+//#else
+    //とりあえずここで、アー�?の固定。設計に基づ�?て変えるべ�?
+    //int arm_cnt = gArm->getCount();
+    //syslog(LOG_NOTICE,"%d",arm_cnt);
+    //int diff = -50 - arm_cnt;
+    
 #if defined(MAKE_SIM)
     gArm->setPWM(diff*4.0);
 #endif
 
     gScene->run();
-  }
 
-  ext_tsk();
-}
+    ext_tsk();
+ }
+
+  //ext_tsk();
+
 
 extern bool mresult;
 void count()

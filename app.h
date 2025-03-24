@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-#include "ev3api.h"
+#include "spikeapi.h"
 
 #define MAIN_PRIORITY    TMIN_APP_TPRI + 1
 #define POLLING_PRIORITY    TMIN_APP_TPRI + 2

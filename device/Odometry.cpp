@@ -1,5 +1,5 @@
 #define _USE_MATH_DEFINES
-
+#include "SpikePort.h"
 #include "Odometry.h"
 #include "math.h"
 #include "HackEv3.h"
@@ -7,20 +7,25 @@
 #define M_PI 3.14159265358979323846
 
 // test comment
-Odometry::Odometry(Motor *left, Motor *right,
+Odometry::Odometry(//Motor *left, Motor *right,
+					pup_motor_t *nleft,pup_motor_t *nright,
 					Length *len,
 					TurnAngle *angle,
 					XPosition *xp,
 					YPosition *yp):
-	mLeftMotor(left),
-	mRightMotor(right),
+	//mLeftMotor(left),
+	mLeftMotor(nleft),
+	//mRightMotor(right),
+	mRightMotor(nright),
 	mTurnAngle(angle),
 	mLength(len),
 	mXPosition(xp),
 	mYposition(yp)
 {
-	mLeftMotor->reset();
-	mRightMotor->reset();
+	//mLeftMotor->reset();
+	pup_motor_reset_count(mLeftMotor);
+	//mRightMotor->reset();
+	pup_motor_reset_count(mRightMotor);
 
 	x=y=th=0.0;
 	sumlen=0;
@@ -49,8 +54,10 @@ void Odometry::resetAngle()
 
 void Odometry::update()
 {
-	current_rs1 = mLeftMotor->getCount();
-	current_rs2 = mRightMotor->getCount();
+	//current_rs1 = mLeftMotor->getCount();
+	current_rs1 = pup_motor_get_count(mLeftMotor);
+	//current_rs2 = mRightMotor->getCount();
+	current_rs2 = pup_motor_get_count(mRightMotor);
 	
 	calc();
 

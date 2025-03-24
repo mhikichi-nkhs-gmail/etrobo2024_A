@@ -1,11 +1,12 @@
 #include "MotorManager.h"
 #include "Walker.h"
+#include "SpikePort.h"
 
-extern Motor *gLeftWheel;
-extern Motor *gRightWheel;
+//extern Motor *gLeftWheel;
+//extern Motor *gRightWheel;
 double mTime =0.0;
 
-MotorManager::MotorManager(Motor *left, Motor *right):
+MotorManager::MotorManager(pup_motor_t *left, pup_motor_t *right):
 	mLeftMotor(left),
 	mRightMotor(right)
 {
@@ -15,8 +16,8 @@ void MotorManager::setPwm(int left,int right)
 	int setleft;
 	int setright;
 	
-	current_lmotor = mLeftMotor->getCount();
-	current_rmotor = mRightMotor->getCount();
+	current_lmotor = pup_motor_get_count(mLeftMotor);
+	current_rmotor = pup_motor_get_count(mRightMotor);
 	
 	if(left != 0)
 	{
@@ -104,22 +105,28 @@ void MotorManager::setPwm(int left,int right)
 
 		if(mlCount == 200)
 		{
-			mLeftMotor->setPWM(setleft);
+			//mLeftMotor->setPWM(setleft);
+			pup_motor_set_power(mLeftMotor, setleft); 
 			printf("EMERGENCY!!\n");
 		}
 		else
 		{
-			mLeftMotor->setPWM(left);
+			//mLeftMotor->setPWM(left);
+			pup_motor_set_power(mLeftMotor, left);
 		}
 
 		if(mrCount == 200)
 		{
-			mRightMotor->setPWM(setright);
+			//mRightMotor->setPWM(setright);
+			pup_motor_set_power(mRightMotor, setright);
+
 			printf("EMERGENCY!!\n");
 		}
 		else
 		{
-			mRightMotor->setPWM(right);
+			//mRightMotor->setPWM(right);
+			pup_motor_set_power(mRightMotor, right);
+
 		}
 		
 	

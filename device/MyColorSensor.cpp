@@ -1,22 +1,24 @@
 #include "MyColorSensor.h"
-
 #include "util.h"
+#include "SpikePort.h"
 
  const int MyColorSensor::BRIGHT = false;
  const int MyColorSensor::COLOR = true;
 
-MyColorSensor::MyColorSensor(ePortS port,
+MyColorSensor::MyColorSensor(pup_device_t *ncolor,
                             Brightness *br,
                             HsvHue *h,
                             HsvSatu *s):
-    mPort(port),
+    //mPort(mcolor),
+    port(ncolor),
     mBrightness(br),
     mColorMode(COLOR),
     mHue(h),
     mSatu(s),
     mNorm(true)
 {
-    mColor = new ColorSensor(mPort);
+    //NColor = pup_color_sensor_color(mPort);
+    port = ncolor;
 
     mMax_brightness = 36;
     mMin_brightness = 6;
@@ -42,14 +44,18 @@ void MyColorSensor::update()
    // ColorSensor col(PORT_2);
 
     if(mColorMode==BRIGHT) {
-        mBright = mColor->getBrightness();
+        //mBright = mColor->getBrightness();
+        mBright = pup_color_sensor_reflection(port);
         mNorm_bright = normBrightness(mBright, mMin_brightness, mMax_brightness);
     } else {
-        mColor->getRawColor(raw);
-       // syslog(LOG_NOTICE,"%d,%d,%d",raw.r,raw.g,raw.b);
+        
+        //mColor->getRawColor(raw);
+        raw = pup_color_sensor_rgb(port);
+        // syslog(LOG_NOTICE,"%d,%d,%d",raw.r,raw.g,raw.b);
         mRgb.r = normColor(raw.r,mMin_R,mMax_R);
         mRgb.g = normColor(raw.g,mMin_G,mMax_G);
         mRgb.b = normColor(raw.b,mMin_B,mMax_B);
+        
         //printf("r,g,b%f%f%f\n", mRgb.r, mRgb.g, mRgb.b);
         getHSV(mRgb,mHsv);
         mHue->update(mHsv.h);
@@ -217,7 +223,9 @@ void MyColorSensor::getHSV(rgb_f_t rgb, hsv_t& hsv)
 
 void MyColorSensor::setRGB()
 {
-    mColor->getRawColor(raw);
+    //mColor->getRawColor(raw);
+    pup_color_sensor_rgb(port);
+    //ncolor = pup_color_sensor_rgb(raw);
     /*
     printf("raw.r = %d\n",raw.r);
     printf("raw.g = %d\n",raw.g);
@@ -230,7 +238,7 @@ void MyColorSensor::setRGB()
 }
 
 // debug用
-rgb_raw_t MyColorSensor::getRgb()
+pup_color_rgb_t MyColorSensor::getRgb()
 {
     return raw;
 }

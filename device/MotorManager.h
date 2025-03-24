@@ -4,21 +4,21 @@
 #include <math.h>
 #include "util.h"
 
-#include "Motor.h"
+//#include "Motor.h"
 #include "Odometry.h"
 
 class MotorManager
 {
     public:
-		MotorManager(Motor *left,
-			Motor *right);
+		MotorManager(pup_motor_t *left,
+					 pup_motor_t *right);
 
 	void setPwm(int left,int right);
 	void init();
 
 	private:
-		Motor *mLeftMotor;
-		Motor *mRightMotor;
+		pup_motor_t *mLeftMotor;
+		pup_motor_t *mRightMotor;
 
 		int32_t current_lmotor;
 		int32_t current_rmotor;

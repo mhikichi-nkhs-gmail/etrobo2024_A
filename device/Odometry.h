@@ -3,21 +3,22 @@
 
 #include <math.h>
 #include "util.h"
-
-#include "Motor.h"
+#include "SpikePort.h"
+//#include "Motor.h"
 #include "Length.h"
 #include "TurnAngle.h"
 #include "Measure.h"
 #include "XPosition.h"
 #include "YPosition.h"
-
-using namespace ev3api;
+//using namespace ev3api;
 
 class Odometry
 {
 public:
-	Odometry(Motor *left,
-			Motor *right,
+	Odometry(//Motor *left,
+			pup_motor_t *nleft,
+			//Motor *right,
+			pup_motor_t *nright,
 			Length *len,
 			TurnAngle *angle,
 			XPosition *xp,
@@ -30,8 +31,10 @@ public:
 	//void setPwm(int left,int right);
 
 private:
-	Motor *mLeftMotor;
-	Motor *mRightMotor;
+	//Motor *mLeftMotor;
+	pup_motor_t *mLeftMotor;
+	//Motor *mRightMotor;
+	pup_motor_t *mRightMotor;
 	Length *mLength;
 	TurnAngle *mTurnAngle;
 	XPosition *mXPosition;

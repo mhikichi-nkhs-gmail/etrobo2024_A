@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "MyColorSensor.h"
-
-#include "ev3api.h"
+#include "SpikePort.h"
+#include "spikeapi.h"
 
 extern MyColorSensor *gColor;
         
@@ -11,19 +11,25 @@ extern HsvHue *gHsvHue;
 
 extern HsvSatu *gHsvSatu;
 
+pup_device_t *  gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
+
+
 bool flag = false;
+
+
 
 Scene::Scene():
     mState(UNDEFINED)
 {
-
-    gColor = new MyColorSensor(PORT_2,gBrightness,gHsvHue,gHsvSatu);
+    //gColor = new MyColorSensor(PORT_2,gBrightness,gHsvHue,gHsvSatu);
+    gColor = new MyColorSensor(gcolorsensor,gBrightness,gHsvHue,gHsvSatu);
     mSsm = new SpeedSectionManager();
     mDs = new DoubleSection();
     mDs2 = new DoubleSection();
     mBs = new BlockSection();
     mSs = new SmartSection();
-    int mv = ev3_battery_voltage_mV();
+    //int mv = ev3_battery_voltage_mV();
+    int mv = hub_battery_get_voltage();
     printf("%d\n",mv);
     printf("作った\n");
 }
@@ -77,8 +83,11 @@ void Scene::execUndefined()
 
 void Scene::execCalibration()
 {
-    ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
-    if(ev3_button_is_pressed(LEFT_BUTTON))
+    hub_button_t pressed;
+    pbio_error_t err = hub_button_is_pressed(&pressed); 
+    //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
+    //if(ev3_button_is_pressed(LEFT_BUTTON))
+    if(pressed & HUB_BUTTON_LEFT)
     {
         printf("left\n");
         mSsm->course(0);
@@ -89,8 +98,10 @@ void Scene::execCalibration()
         mSs->course(0);
         mState=START;
     }
-    ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
-    if(ev3_button_is_pressed(RIGHT_BUTTON))
+
+    //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
+    //if(ev3_button_is_pressed(RIGHT_BUTTON))
+    if(pressed & HUB_BUTTON_RIGHT)
     {
         printf("right\n");
         mSsm->course(1);
@@ -123,6 +134,8 @@ void Scene::execCalibration()
 
 void Scene::execStart()
 {
+    hub_button_t pressed;
+    pbio_error_t err = hub_button_is_pressed(&pressed); 
     //printf("Start_Start\n");
     /*ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
     if(ev3_button_is_pressed(LEFT_BUTTON))
@@ -144,14 +157,15 @@ void Scene::execStart()
 #if defined(MAKE_SIM)
 // とりあえず動かすだけなので、設計に基づ�?て書き直そう
     //msg_log("Press Touch Button to start.");
-    ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
+    //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
     if (ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
     {
         printf("DOUBLELOOP\n");
             mState=SMART;
     }
 #else
-    if (ev3_button_is_pressed(ENTER_BUTTON))
+    //if (ev3_button_is_pressed(ENTER_BUTTON))
+    if(pressed & HUB_BUTTON_CENTER)
     {
         printf("SPEED\n");
         //mState=SPEED;

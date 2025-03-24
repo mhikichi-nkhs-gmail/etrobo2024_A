@@ -6,8 +6,8 @@
 // 初期処理用
 void init_f(const char *str) {
   // フォントの設定と0行目の表示
-  ev3_lcd_set_font(EV3_FONT_MEDIUM);
-  ev3_lcd_draw_string(str, 0, 0);
+  //ev3_lcd_set_font(EV3_FONT_MEDIUM);
+  //ev3_lcd_draw_string(str, 0, 0);
   
   tslp_tsk(50*1000U);
   printf("%s\n",str);
@@ -23,8 +23,8 @@ void init_f(const char *str) {
  */
 void msg_f(const char *str, int32_t line) {
   const int8_t line_height = 20;
-  ev3_lcd_fill_rect(0, line * line_height, EV3_LCD_WIDTH, line_height, EV3_LCD_WHITE);
-  ev3_lcd_draw_string(str, 0, line * line_height);
+ // ev3_lcd_fill_rect(0, line * line_height, EV3_LCD_WIDTH, line_height, EV3_LCD_WHITE);
+  //ev3_lcd_draw_string(str, 0, line * line_height);
 }
 
 
