@@ -137,8 +137,9 @@ void MotorManager::setPwm(int left,int right)
 
 		
 	//mLeftMotor->setPWM(left);
+	pup_motor_set_power(mLeftMotor, left);
 	//mRightMotor->setPWM(right);
-
+	pup_motor_set_power(mRightMotor, right);
 	//printf("left,,%d,,right,,%d\n", left,right);
 }
 

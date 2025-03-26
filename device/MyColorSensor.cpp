@@ -30,12 +30,12 @@ MyColorSensor::MyColorSensor(pup_device_t *ncolor,
     mMax_B  = 165;
     mMin_B  = 8;
 #else
-    mMax_R  = 217;
-    mMin_R  = 0;
-    mMax_G  = 228;
-    mMin_G  = 0;
-    mMax_B  = 235;
-    mMin_B  = 0;  
+    mMax_R  = 1000;
+    mMin_R  = 30;
+    mMax_G  = 1000;
+    mMin_G  = 30;
+    mMax_B  = 1000;
+    mMin_B  = 30;  
 #endif 
 }
 
@@ -56,13 +56,13 @@ void MyColorSensor::update()
         mRgb.g = normColor(raw.g,mMin_G,mMax_G);
         mRgb.b = normColor(raw.b,mMin_B,mMax_B);
         
-        //printf("r,g,b%f%f%f\n", mRgb.r, mRgb.g, mRgb.b);
+        //printf("r,g,b%f %f %f\n", mRgb.r, mRgb.g, mRgb.b);
         getHSV(mRgb,mHsv);
         mHue->update(mHsv.h);
         mSatu->update(mHsv.s);
 
         mBright =  0.298912 * mRgb.r  + 0.586611 * mRgb.g + 0.114478 * mRgb.b ;
-        //syslog(LOG_NOTICE,"(x100) %d,%d,%d  %d",(int)(mRgb.r*100),(int)(mRgb.g*100),(int)(mRgb.b*100) , (int)(mBright));
+        //printf("(x100) %d,%d,%d  %d\n",(int)(mRgb.r*100),(int)(mRgb.g*100),(int)(mRgb.b*100) , (int)(mBright));
         mNorm_bright = normBrightness(mBright, 0, 100);
     }
 
@@ -224,13 +224,12 @@ void MyColorSensor::getHSV(rgb_f_t rgb, hsv_t& hsv)
 void MyColorSensor::setRGB()
 {
     //mColor->getRawColor(raw);
-    pup_color_sensor_rgb(port);
-    //ncolor = pup_color_sensor_rgb(raw);
-    /*
-    printf("raw.r = %d\n",raw.r);
-    printf("raw.g = %d\n",raw.g);
-    printf("raw.b = %d\n",raw.b);
-    */
+    raw = pup_color_sensor_rgb(port);
+    
+    //printf("raw.r = %d\n",raw.r);
+    //printf("raw.g = %d\n",raw.g);
+    //printf("raw.b = %d\n",raw.b);
+    
     mMax_R = raw.r;
     mMax_G = raw.g;
     mMax_B = raw.b;

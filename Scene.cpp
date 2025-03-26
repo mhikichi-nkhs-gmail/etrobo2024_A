@@ -11,7 +11,8 @@ extern HsvHue *gHsvHue;
 
 extern HsvSatu *gHsvSatu;
 
-pup_device_t *gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
+extern pup_device_t *  gcolorsensor;
+
 
 
 bool flag = false;
@@ -36,6 +37,7 @@ Scene::Scene():
 
 bool Scene::run()
 {
+    //printf("%d\n",mState);
     switch(mState) {
         case UNDEFINED:
             execUndefined();
@@ -83,6 +85,7 @@ void Scene::execUndefined()
 
 void Scene::execCalibration()
 {
+    
     hub_button_t pressed;
     pbio_error_t err = hub_button_is_pressed(&pressed); 
     //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
@@ -168,9 +171,9 @@ void Scene::execStart()
     if(pressed & HUB_BUTTON_CENTER)
     {
         printf("SPEED\n");
-        //mState=SPEED;
+        mState=SPEED;
         //mState=DOUBLELOOP;
-        mState=SMART;
+        //mState=SMART;
     }
 #endif
 //printf("Start_Finish\n");

@@ -99,7 +99,9 @@ static void user_system_create() {
   gProcess = new Process();
 
   gScene = new Scene();
-
+ 
+  pup_motor_setup(gLeftWheel,PUP_DIRECTION_COUNTERCLOCKWISE,true);
+  pup_motor_setup(gRightWheel,PUP_DIRECTION_CLOCKWISE,true);
 }
 static void user_system_destroy() {
 

@@ -22,7 +22,6 @@ void SectionManager::set(SecParam* array) //?��?��Ԃ�?��?��?�
 
     for(int i=0;; i++)
     {
-        //printf("酝�?�\n");
         if(array[i].walker_no == Section::WANONE)
         {
             //printf("breakSet\n");

@@ -43,6 +43,7 @@ bool JudgeLength::judgement()
 
     if(mdirect)
     {
+        
         if(mLengthkids <= mLength->getValue())
         {
             return true;

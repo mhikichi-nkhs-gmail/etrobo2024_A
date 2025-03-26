@@ -19,8 +19,10 @@ void JudgeColor::init()
 bool JudgeColor::judgement()
 {
     double value = mHsvHue->getValue() - mHRange;
+    
+    //printf("色みたい%f %f\n",value,mHsvSatu->getValue());
 
-    value = fabs(value);//�Ԃւ̑Ή�
+    value = fabs(value);//�Ԃւ̑Ή�
     //printf("colorvalue\n");
 
     if(value >=180)
@@ -28,7 +30,7 @@ bool JudgeColor::judgement()
        value = 360 -value;
     }
 
-    if(value < 20)
+    if(value < 40)
     {
         if(mSRange < mHsvSatu->getValue())
         {
