@@ -12,8 +12,7 @@ extern HsvHue *gHsvHue;
 extern HsvSatu *gHsvSatu;
 
 extern pup_device_t *  gcolorsensor;
-
-
+extern pup_device_t *  gforcesensor;
 
 bool flag = false;
 
@@ -161,14 +160,14 @@ void Scene::execStart()
 // とりあえず動かすだけなので、設計に基づ�?て書き直そう
     //msg_log("Press Touch Button to start.");
     //ev3_sensor_config(EV3_PORT_1, TOUCH_SENSOR);
+      // if(pup_force_sensor_pressed(gforcesensor , 1))
     if (ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
     {
         printf("DOUBLELOOP\n");
             mState=SMART;
     }
 #else
-    //if (ev3_button_is_pressed(ENTER_BUTTON))
-    if(pressed & HUB_BUTTON_CENTER)
+    if(pup_force_sensor_pressed(gforcesensor , 1))
     {
         printf("SPEED\n");
         mState=SPEED;
@@ -180,7 +179,6 @@ void Scene::execStart()
 }
 void Scene::execSpeed()
 {
-    //printf("Speed_Start\n");
     if(mSsm->run()) {
         delete mSsm;
         mState=DOUBLELOOP;

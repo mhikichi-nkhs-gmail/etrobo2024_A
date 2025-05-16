@@ -40,12 +40,12 @@ int log_idx=0;
 
 double msg_logbuf[30000][10];
 
-pup_device_t *  gforcesensor = pup_force_sensor_get_device(PBIO_PORT_ID_F);
-pup_device_t *  gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_C);
-pup_device_t *  gultrasensor = pup_ultrasonic_sensor_get_device (PBIO_PORT_ID_D);
-pup_motor_t *  gLeftWheel = pup_motor_get_device(PBIO_PORT_ID_E);
-pup_motor_t *  gRightWheel = pup_motor_get_device(PBIO_PORT_ID_B);
-pup_motor_t *  gArm = pup_motor_get_device(PBIO_PORT_ID_A);
+pup_device_t *  gforcesensor = pup_force_sensor_get_device(PBIO_PORT_ID_D);
+pup_device_t *  gcolorsensor = pup_color_sensor_get_device (PBIO_PORT_ID_E);
+pup_device_t *  gultrasensor = pup_ultrasonic_sensor_get_device (PBIO_PORT_ID_F);
+pup_motor_t *  gLeftWheel = pup_motor_get_device(PBIO_PORT_ID_B);
+pup_motor_t *  gRightWheel = pup_motor_get_device(PBIO_PORT_ID_A);
+pup_motor_t *  gArm = pup_motor_get_device(PBIO_PORT_ID_C);
 
 Polling *gPolling;
 MyColorSensor *gColor;
@@ -173,10 +173,10 @@ void tracer_task(intptr_t unused) {
   
   
  //if(ev3_touch_sensor_is_pressed(EV3_PORT_1) == 1)
-  if(pup_force_sensor_pressed(gforcesensor , 1))
-  {
-    wup_tsk(MAIN_TASK);
-  }
+  // if(pup_force_sensor_pressed(gforcesensor , 1))
+  // {
+  //   wup_tsk(MAIN_TASK);
+  // }
 #endif
 //#else
     //とりあえずここで、アー�?の固定。設計に基づ�?て変えるべ�?

@@ -42,7 +42,8 @@ APPL_CXXOBJS += \
 	BlockSection.o \
 	Process.o \
 	FileWalker.o \
-	SmartSection.o 
+	SmartSection.o \
+	StreamCaptureRGB.o
 
 SRCLANG := c++
 
@@ -54,15 +55,20 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 
 endif
 
-APPL_DIRS += $(mkfile_path)app $(mkfile_path)unit $(mkfile_path)device $(mkfile_path)walker $(mkfile_path)section $(mkfile_path)judge $(mkfile_path)measure $(mkfile_path)communication
+APPL_LIBS += -lm -lstdc++ -lopencv_core -lopencv_core -lopencv_imgcodecs -lopencv_imgproc -lopencv_highgui 
+
+APPL_DIRS += $(mkfile_path)app $(mkfile_path)unit $(mkfile_path)device $(mkfile_path)walker $(mkfile_path)section $(mkfile_path)judge $(mkfile_path)measure $(mkfile_path)communication \
+		  	$(mkfile_path)camera
 INCLUDES += \
+	-I/usr/include/opencv4 \
 	-I$(mkfile_path)app \
 	-I$(mkfile_path)device \
 	-I$(mkfile_path)walker \
 	-I$(mkfile_path)section \
 	-I$(mkfile_path)judge \
 	-I$(mkfile_path)measure \
-	-I$(mkfile_path)communication
+	-I$(mkfile_path)communication \
+	-I$(mkfile_path)camera
 	
 
 # COPTS += -fno-use-cxa-atexit
