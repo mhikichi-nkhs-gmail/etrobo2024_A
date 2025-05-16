@@ -43,7 +43,8 @@ APPL_CXXOBJS += \
 	Process.o \
 	FileWalker.o \
 	SmartSection.o \
-	StreamCaptureRGB.o
+	StreamCaptureRGB.o \
+	StreamCaptureWrapper.o
 
 SRCLANG := c++
 

@@ -3,6 +3,8 @@
 #include "SpikePort.h"
 #include "spikeapi.h"
 
+#include "StreamCaptureWrapper.h"
+
 extern MyColorSensor *gColor;
         
 extern Brightness *gBrightness;
@@ -79,6 +81,8 @@ void Scene::execUndefined()
     //mState=START;
     mState=CALIBRATION;
     printf("Undefined\n");
+
+    camera_initialize(640,480);
 
 }
 

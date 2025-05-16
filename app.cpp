@@ -32,6 +32,8 @@
 #include "MotorManager.h"
 #include "JudgeReception.h"
 
+#include "StreamCaptureWrapper.h"
+
 //using namespace spikeapi;
 //using namespace ev3api;
 
@@ -102,6 +104,10 @@ static void user_system_create() {
  
   pup_motor_setup(gLeftWheel,PUP_DIRECTION_COUNTERCLOCKWISE,true);
   pup_motor_setup(gRightWheel,PUP_DIRECTION_CLOCKWISE,true);
+
+  start_sender_thread();
+  start_result_thread();
+
 }
 static void user_system_destroy() {
 
