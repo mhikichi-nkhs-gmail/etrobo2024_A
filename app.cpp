@@ -105,6 +105,8 @@ static void user_system_create() {
   pup_motor_setup(gLeftWheel,PUP_DIRECTION_COUNTERCLOCKWISE,true);
   pup_motor_setup(gRightWheel,PUP_DIRECTION_CLOCKWISE,true);
 
+  
+  camera_initialize(1280,720);
   start_sender_thread();
   start_result_thread();
 

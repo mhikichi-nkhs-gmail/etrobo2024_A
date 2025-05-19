@@ -168,16 +168,6 @@ bool camera_initialize(int width, int height) {
                     std::memcpy(shared_buf, frame.data, shared_buf_size);
                     shared_width = frame.cols;
                     shared_height = frame.rows;
-                // printf("shared_width,shared_height=%d,%d\n",shared_width,shared_height);
-                   // cv::Mat image(shared_height, shared_width, CV_8UC3, shared_buf,shared_width*3);
-                    // if (!image.empty()) {
-                    //     cv::imwrite("shared_frame.jpg", image);
-                    // } else {
-                    //     std::cerr << "Failed to construct cv::Mat from shared buffer.\n";
-                    // }
-                
-                    // clock_gettime(CLOCK_REALTIME, &mid2time);
-                // printf("copy time:%f\n", diffspectime(mid1time,mid2time));
                     pthread_mutex_unlock(&shared_mutex);
                     // enable_interrupt(&oldsig);
                 } 
@@ -235,32 +225,187 @@ bool camera_get_image(cv::Mat &output) {
 
 struct timespec  sttime2,mid1time2,mid2time2,edtime2;
 
+/* フレーム結果モニター用imageのクローンを排他制御で保存する　*/
+bool result_put_image_gate(cv::Mat image) {
+
+    clock_gettime(CLOCK_REALTIME, &sttime2);
+
+    // printf("result_put_image\n");
+    double crop_rate=0.25;
+    int crop_width=image.cols*1.0;
+    int crop_height=image.rows*1.0;
+    int crop_x=image.cols-crop_width;
+    int crop_y=image.rows-crop_height;
+
+    cv::Mat tmp,colorimg;
+    camera.cropImage(image,crop_x, crop_y,crop_width,crop_height, tmp, crop_rate);
+    //camera.shared_frame = image.clone();
+  //  cv::resize(image, camera.shared_frame, cv::Size(image.cols / 2, image.rows / 2), cv::INTER_NEAREST);
+
+    int result_w=image.cols*crop_rate;
+    int result_h=image.rows*crop_rate;
+    double deep_width=0.42; // 奥側の比率
+    double deep_length=0.55; // 地平線位置
+    double center_align=0.00; // センターずれ比率
+    int deep_left = (result_w*(1-deep_width))/2; // 余白の半分
+    int deep_left2 = (result_w/deep_width-result_w)/2; //　拡大時に左に外れる距離
+    int top_line=deep_length*result_h;
+  //透視変換
+    std::vector<cv::Point2f> par0 = {{0, result_h}, {result_w, result_h},
+                            {result_w, top_line},{0,top_line}};
+
+    std::vector<cv::Point2f> par1 = {{result_w*center_align, result_h}, {result_w*center_align+result_w+result_w*center_align, result_h},
+                            {result_w*center_align/deep_width+result_w-deep_left, top_line},{result_w*center_align/deep_width+deep_left,top_line}};
+    std::vector<cv::Point2f> par2 = {{deep_left2+0,result_h/deep_width},{deep_left2+result_w,result_h/deep_width},
+                            {deep_left2+result_w,0},{deep_left2+0,0}};
+    cv::Mat pspmat = cv::getPerspectiveTransform(par1, par2);
+    cv::Size size = {result_w/deep_width, result_h/deep_width};
+    cv::Scalar borderValue= cv::Scalar(128,128,128);
+    printf("par1 (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",par1[0].x,par1[0].y,par1[1].x,par1[1].y,par1[2].x,par1[2].y,par1[3].x,par1[3].y);
+    printf("par2 (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",par2[0].x,par2[0].y,par2[1].x,par2[1].y,par2[2].x,par2[2].y,par2[3].x,par2[3].y);
+    cv::warpPerspective(tmp , colorimg ,pspmat,size,cv::INTER_NEAREST,cv::BORDER_CONSTANT,borderValue);
+
+
+
+    //HSV
+    cv::Mat hsv_image;
+    cv::cvtColor(colorimg, hsv_image, cv::COLOR_BGR2HSV);
+
+    // HSVチャンネルの分割
+    std::vector<cv::Mat> hsv_channels;
+    cv::split(hsv_image, hsv_channels);
+
+    // 明度 (V) の最大値を求める
+    double  v_min,v_max;
+    cv::minMaxLoc(hsv_channels[2], &v_min, &v_max);  // Vチャンネル
+
+    std::cout << "最小明度 (V): " << v_min << " 最大明度 (V): " << v_max << std::endl;
+
+    // カーネルの作成: 小さな矩形カーネルを使って処理
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(6, 6));
+
+        // 1. 白色領域を除外（明度Vが高く、彩度Sが低い部分を白色とみなす）
+    cv::Mat white_mask;
+    inRange(hsv_image, cv::Scalar(0, 0, v_max*0.65), cv::Scalar(180, 100, 255), white_mask);
+    // 膨張処理
+    erode(white_mask, white_mask, kernel);  // 収縮を行う
+    dilate(white_mask, white_mask, kernel);
+    dilate(white_mask, white_mask, kernel);
+
+    // 2. 黒い線を除外（明度Vが非常に低い部分を黒とみなす）
+    cv::Mat black_mask;
+    inRange(hsv_image, cv::Scalar(0, 0, 0), cv::Scalar(180, 255, v_max*0.15), black_mask);
+    // 膨張処理
+    erode(black_mask, black_mask, kernel);  // 収縮を行う
+    dilate(black_mask, black_mask, kernel);
+    dilate(black_mask, black_mask, kernel);
+
+    // 3. 色彩を持つ領域を除外（彩度Sが高い部分を色彩領域として除外）
+    cv::Mat color_mask;
+    inRange(hsv_image, cv::Scalar(0, 110, 50), cv::Scalar(180, 255, 255), color_mask);
+    // 膨張処理
+    erode(black_mask, black_mask, kernel);  // 収縮を行う
+    dilate(color_mask, color_mask, kernel);
+    dilate(color_mask, color_mask, kernel);
+
+    // 白色、黒色、色彩領域のマスクを組み合わせて除外
+    cv::Mat mask = white_mask | black_mask | color_mask;
+
+
+    // 除外した領域を取り除いた画像を取得
+    cv::Mat image_no_extraneous;
+    bitwise_and(colorimg, colorimg, image_no_extraneous, ~mask);
+
+    // グレー画像に変換
+    cv::Mat gray_image;
+    cv::cvtColor(image_no_extraneous, gray_image, cv::COLOR_RGB2GRAY);
+
+    // 二値化処理
+    cv::Mat binary_image;
+    threshold(gray_image, binary_image, 2, 255, cv::THRESH_BINARY);
+      // モルフォロジー処理 (ノイズ除去)
+      // オープニング（収縮→膨張）でノイズを除去
+    // cv::Mat opened;
+    // cv::morphologyEx(binary_image, opened, cv::MORPH_OPEN, kernel);
+    // // クロージング（膨張→収縮）で物体の形を整える
+    // cv::Mat closed;
+    // cv::morphologyEx(opened, closed, cv::MORPH_CLOSE, kernel);
+
+    // 輪郭を検出
+    std::vector<std::vector<cv::Point>> contours;
+    findContours(binary_image, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+    // 検出された輪郭から縦長の物体を選別
+    for (size_t i = 0; i < contours.size(); ++i) {
+
+        // 輪郭の外接矩形を取得
+        cv::Rect bounding_box = cv::boundingRect(contours[i]);
+        // 面積が小さい矩形を除外   
+            if (bounding_box.area() < 500) {
+                continue; // 面積が500以下の矩形は除外
+            }
+
+        cv::rectangle(colorimg, bounding_box, cv::Scalar(0, 255, 0), 2);
+        // printf("bounding_box (%d,%d,%d,%d) \n",bounding_box.x,bounding_box.y,bounding_box.width,bounding_box.height);
+
+        // 縦長の物体を検出（縦横比が一定範囲内であるか）
+        // float aspect_ratio = (float)bounding_box.height / bounding_box.width;
+        // if (aspect_ratio > 2 && aspect_ratio < 5) {  // 縦横比が2~5の範囲
+        //     // 矩形を描画
+        //     cv::rectangle(image_no_extraneous, bounding_box, cv::Scalar(0, 255, 0), 2);
+        // }
+    }
+
+
+    // // グレーオブジェクトの抽出設定
+    // // 彩度 (S) が低い、明度 (V) が適度な範囲にある領域を抽出
+    // // 彩度の範囲 (0-50) と 明度の範囲 (100-200) など、調整が必要
+    // cv::Mat gray_mask;
+    // cv::inRange(hsv_image, cv::Scalar(0, 0, v_max*0.2), cv::Scalar(180, 150, v_max*0.5), gray_mask);
+
+    pthread_mutex_lock(&result_mutex);
+
+    camera.shared_frame=colorimg.clone();
+
+    pthread_mutex_unlock(&result_mutex);
+
+    return true;
+}
+
+
 /* 結果モニター用imageのクローンを排他制御で保存する　*/
 bool result_put_image(cv::Mat image) {
     clock_gettime(CLOCK_REALTIME, &sttime2);
 
     // printf("result_put_image\n");
+    double crop_rate=0.25;
     int crop_width=image.cols*1.0;
-    int crop_height=image.rows*2/3;
-    int crop_x=image.cols/2-crop_width/2;
+    int crop_height=image.rows*1.0;
+    int crop_x=image.cols-crop_width;
     int crop_y=image.rows-crop_height;
 
     cv::Mat tmp,colorimg;
-    camera.cropImage(image,crop_x, crop_y,crop_width,crop_height, tmp, 0.5);
+    camera.cropImage(image,crop_x, crop_y,crop_width,crop_height, tmp, crop_rate);
     //camera.shared_frame = image.clone();
   //  cv::resize(image, camera.shared_frame, cv::Size(image.cols / 2, image.rows / 2), cv::INTER_NEAREST);
 
-    int result_w=crop_width/2;
-    int result_h=crop_height/2;
-    double deep_width=0.6; // 奥側の比率
-    double center_align=0.04; // センターずれ比率
+    int result_w=image.cols*crop_rate;
+    int result_h=image.rows*crop_rate;
+    double deep_width=0.29; // 奥側の比率
+    double deep_length=0.4; // 地平線位置
+    double center_align=0.00; // センターずれ比率
     int deep_left = (result_w*(1-deep_width))/2; // 余白の半分
+    int top_line=deep_length*result_h;
   //透視変換
-    cv::Point2f par1[] = {{result_w*center_align,result_h},{result_w*center_align+result_w+result_w*center_align,result_h},{result_w*center_align/deep_width+result_w-deep_left,0},{result_w*center_align/deep_width+deep_left,0}};
-    cv::Point2f par2[] = {{0,result_h/deep_width},{result_w,result_h/deep_width},{result_w,0},{0,0}};
+    cv::Point2f par1[] = {{result_w*center_align, result_h}, {result_w*center_align+result_w+result_w*center_align, result_h},
+                            {result_w*center_align/deep_width+result_w-deep_left, top_line},{result_w*center_align/deep_width+deep_left,top_line}};
+    cv::Point2f par2[] = {{0,result_h/deep_width},{result_w,result_h/deep_width},
+                            {result_w,0},{0,0}};
     cv::Mat pspmat = cv::getPerspectiveTransform(par1, par2);
-    cv::Size size = {result_w,result_h/deep_width};
+    cv::Size size = {result_w, result_h/deep_width};
     cv::Scalar borderValue= cv::Scalar(128,128,128);
+    printf("par1 (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",par1[0].x,par1[0].y,par1[1].x,par1[1].y,par1[2].x,par1[2].y,par1[3].x,par1[3].y);
+    printf("par2 (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n",par2[0].x,par2[0].y,par2[1].x,par2[1].y,par2[2].x,par2[2].y,par2[3].x,par2[3].y);
     cv::warpPerspective(tmp , colorimg ,pspmat,size,cv::INTER_NEAREST,cv::BORDER_CONSTANT,borderValue);
 
     //グレースケール
@@ -383,7 +528,8 @@ void *image_process_thread(void *arg) {
             continue;
         }
         // 処理
-        result_put_image(frame);
+//        result_put_image(frame);
+        result_put_image_gate(frame);
 
         // 処理にかかった時間を計測
         auto end = std::chrono::high_resolution_clock::now();

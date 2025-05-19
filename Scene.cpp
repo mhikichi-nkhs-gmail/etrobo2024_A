@@ -18,8 +18,6 @@ extern pup_device_t *  gforcesensor;
 
 bool flag = false;
 
-
-
 Scene::Scene():
     mState(UNDEFINED)
 {
@@ -81,8 +79,6 @@ void Scene::execUndefined()
     //mState=START;
     mState=CALIBRATION;
     printf("Undefined\n");
-
-    camera_initialize(640,480);
 
 }
 
